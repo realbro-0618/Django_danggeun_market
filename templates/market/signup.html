@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        회원가입
+    </title>
+
+</head>
+
+
+<body>
+
+
+<h1>
+    회원가입
+</h1>
+
+
+<form method="post">
+
+    {% csrf_token %}
+
+
+    <p>
+        <label>
+            아이디
+        </label>
+
+        {{ form.username }}
+    </p>
+
+    {% for error in form.username.errors %}
+
+        <p>
+            {{ error }}
+        </p>
+
+    {% endfor %}
+
+
+    <p>
+        <label>
+            이름
+        </label>
+
+        {{ form.name }}
+    </p>
+
+    {% for error in form.name.errors %}
+
+        <p>
+            {{ error }}
+        </p>
+
+    {% endfor %}
+
+
+    <p>
+        <label>
+            생년월일
+        </label>
+
+        {{ form.birth_date }}
+    </p>
+
+    {% for error in form.birth_date.errors %}
+
+        <p>
+            {{ error }}
+        </p>
+
+    {% endfor %}
+
+
+    <p>
+        <label>
+            휴대폰번호
+        </label>
+
+        {{ form.phone }}
+    </p>
+
+    {% for error in form.phone.errors %}
+
+        <p>
+            {{ error }}
+        </p>
+
+    {% endfor %}
+
+
+    <p>
+        <label>
+            비밀번호
+        </label>
+
+        {{ form.password1 }}
+    </p>
+
+    {% for error in form.password1.errors %}
+
+        <p>
+            {{ error }}
+        </p>
+
+    {% endfor %}
+
+
+    <p>
+        <label>
+            비밀번호 확인
+        </label>
+
+        {{ form.password2 }}
+    </p>
+
+    {% for error in form.password2.errors %}
+
+        <p>
+            {{ error }}
+        </p>
+
+    {% endfor %}
+
+
+    <button type="submit">
+        회원가입
+    </button>
+
+
+</form>
+
+
+<p>
+    이미 회원인가요?
+
+    <a href="{% url 'login' %}">
+        로그인
+    </a>
+</p>
+
+
+</body>
+
+</html>

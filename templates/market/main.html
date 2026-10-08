@@ -1,13 +1,77 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danggeun Market</title>
-</head>
-<body>
-    <h1>Welcome to Danggeun Market!</h1>
 
-    <p>이곳은 Django로 만든 당근마켓 클론 프로젝트입니다.</p>
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Danggeun Market
+    </title>
+
+</head>
+
+
+<body>
+
+
+<h1>
+    Poly Market
+</h1>
+
+
+<p>
+    Django로 만드는 중고거래 플랫폼입니다.
+</p>
+
+
+<hr>
+
+
+{% if user.is_authenticated %}
+
+
+    <p>
+        {{ user.first_name }}님 환영합니다.
+    </p>
+
+
+    <p>
+        아이디:
+        {{ user.username }}
+    </p>
+
+
+    <form
+        method="post"
+        action="{% url 'logout' %}"
+    >
+
+        {% csrf_token %}
+
+        <button type="submit">
+            로그아웃
+        </button>
+
+    </form>
+
+
+{% else %}
+
+
+    <a href="{% url 'login' %}">
+        로그인
+    </a>
+
+
+    <a href="{% url 'signup' %}">
+        회원가입
+    </a>
+
+
+{% endif %}
+
+
 </body>
+
 </html>
