@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>채팅</title>
+</head>
+
+<body>
+
+<h1>
+    {{ room.product.title }}
+</h1>
+
+<p>
+    판매자:
+    {{ room.seller.username }}
+</p>
+
+<p>
+    구매자:
+    {{ room.buyer.username }}
+</p>
+
+<a href="{% url 'chat_list' %}">
+    채팅 목록
+</a>
+
+<hr>
+
+<div
+    id="chat-log"
+    style="
+        border: 1px solid black;
+        width: 600px;
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+    "
+>
+
+    {% for message in chat_messages %}
+
+        <div>
+
+            <strong>
+                {{ message.sender.username }}
+            </strong>
+
+            :
+
+            {{ message.content }}
+
+            <small>
+                {{ message.created_at|date:"H:i" }}
+            </small>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<br>
+
+<input
+    id="chat-message-input"
+    type="text"
+    placeholder="메시지를 입력하세요."
+    style="width: 500px;"
+>
+
+<button id="chat-message-submit">
+    전송
+</button>
+
+
+<script>
+
+const roomId = "{{ room.id }}";
+
+const protocol =
+    window.location.protocol === "https:"
+        ? "wss"
+        : "ws";
+
+const chatSocket = new WebSocket(
+    `${protocol}://${window.location.host}/ws/chat/${roomId}/`
+);
+
+const chatLog =
+    document.getElementById("chat-log");
+
+const messageInput =
+    document.getElementById(
+        "chat-message-input"
+    );
+
+const sendButton =
+    document.getElementById(
+        "chat-message-submit"
+    );
+
+
+chatSocket.onmessage = function(event) {
+
+    const data =
+        JSON.parse(event.data);
+
+    const line =
+        document.createElement("div");
+
+    const name =
+        document.createElement("strong");
+
+    name.textContent =
+        data.username;
+
+    const text =
+        document.createTextNode(
+            " : "
+            + data.message
+            + " "
+        );
+
+    const time =
+        document.createElement("small");
+
+    time.textContent =
+        data.created_at;
+
+    line.appendChild(name);
+    line.appendChild(text);
+    line.appendChild(time);
+
+    chatLog.appendChild(line);
+
+    chatLog.scrollTop =
+        chatLog.scrollHeight;
+};
+
+
+function sendMessage() {
+
+    const message =
+        messageInput.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+    chatSocket.send(
+        JSON.stringify({
+            "message": message
+        })
+    );
+
+    messageInput.value = "";
+}
+
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+messageInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>상품 삭제</title>
+</head>
+
+<body>
+
+<h1>상품 삭제</h1>
+
+<p>
+    "{{ product.title }}" 상품을 정말 삭제하시겠습니까?
+</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        삭제
+    </button>
+
+</form>
+
+<a href="{% url 'product_detail' product.id %}">
+    취소
+</a>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>중고상품</title>
+</head>
+
+<body>
+
+<h1>중고거래 게시판</h1>
+
+<p>
+    <a href="{% url 'main' %}">
+        메인
+    </a>
+
+    |
+
+    <a href="{% url 'product_create' %}">
+        판매글 작성
+    </a>
+
+    |
+
+    <a href="{% url 'chat_list' %}">
+        내 채팅
+    </a>
+</p>
+
+<hr>
+
+{% for product in products %}
+
+    <div>
+
+        {% if product.image_url %}
+
+            <img
+                src="{{ product.image_url }}"
+                width="200"
+            >
+
+        {% endif %}
+
+        <h2>
+
+            <a href="{% url 'product_detail' product.id %}">
+                {{ product.title }}
+            </a>
+
+        </h2>
+
+        <p>
+            가격:
+            {{ product.price }}원
+        </p>
+
+        <p>
+            지역:
+            {{ product.region }}
+        </p>
+
+        <p>
+            판매자:
+            {{ product.seller.username }}
+        </p>
+
+        <p>
+            조회 {{ product.view_count }}
+            /
+            찜 {{ product.wish_count }}
+            /
+            채팅 {{ product.chat_count }}
+        </p>
+
+    </div>
+
+    <hr>
+
+{% empty %}
+
+    <p>
+        등록된 상품이 없습니다.
+    </p>
+
+{% endfor %}
+
+</body>
+
+</html>

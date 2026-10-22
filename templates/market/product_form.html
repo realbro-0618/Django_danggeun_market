@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page_title }}</title>
+</head>
+
+<body>
+
+<h1>
+    {{ page_title }}
+</h1>
+
+<form
+    method="post"
+    enctype="multipart/form-data"
+>
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        저장
+    </button>
+
+</form>
+
+<a href="{% url 'product_list' %}">
+    목록으로
+</a>
+
+</body>
+
+</html>

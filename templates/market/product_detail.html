@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.title }}</title>
+</head>
+
+<body>
+
+<a href="{% url 'product_list' %}">
+    상품목록
+</a>
+
+<h1>
+    {{ product.title }}
+</h1>
+
+{% if product.image_url %}
+
+    <img
+        src="{{ product.image_url }}"
+        width="400"
+    >
+
+{% endif %}
+
+<p>
+    판매자:
+    {{ product.seller.username }}
+</p>
+
+<p>
+    판매지역:
+    {{ product.region }}
+</p>
+
+<p>
+    판매가격:
+    {{ product.price }}원
+</p>
+
+<p>
+    네고:
+
+    {% if product.negotiable %}
+        가능
+    {% else %}
+        불가능
+    {% endif %}
+</p>
+
+<p>
+    {{ product.content }}
+</p>
+
+<hr>
+
+<p>
+    조회수:
+    {{ product.view_count }}
+</p>
+
+<p>
+    찜:
+    {{ product.wish_count }}
+</p>
+
+<p>
+    채팅 시작:
+    {{ product.chat_count }}명
+</p>
+
+<hr>
+
+{% if user.is_authenticated %}
+
+    {% if user == product.seller %}
+
+        <p>
+            내가 작성한 게시글입니다.
+        </p>
+
+        <a href="{% url 'product_update' product.id %}">
+            수정하기
+        </a>
+
+        <a href="{% url 'product_delete' product.id %}">
+            삭제하기
+        </a>
+
+    {% else %}
+
+        <form
+            method="post"
+            action="{% url 'wishlist_toggle' product.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button type="submit">
+
+                {% if is_wished %}
+                    찜 취소
+                {% else %}
+                    찜하기
+                {% endif %}
+
+            </button>
+
+        </form>
+
+        <p>
+
+            <a href="{% url 'chat_start' product.id %}">
+                판매자와 채팅하기
+            </a>
+
+        </p>
+
+    {% endif %}
+
+{% else %}
+
+    <p>
+        찜과 채팅을 사용하려면 로그인하세요.
+    </p>
+
+{% endif %}
+
+</body>
+
+</html>

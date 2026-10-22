@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>내 채팅</title>
+</head>
+
+<body>
+
+<h1>내 채팅</h1>
+
+<a href="{% url 'product_list' %}">
+    상품 목록
+</a>
+
+<hr>
+
+{% for room in rooms %}
+
+    <div>
+
+        <h3>
+            {{ room.product.title }}
+        </h3>
+
+        {% if user == room.seller %}
+
+            <p>
+                상대방:
+                {{ room.buyer.username }}
+            </p>
+
+        {% else %}
+
+            <p>
+                상대방:
+                {{ room.seller.username }}
+            </p>
+
+        {% endif %}
+
+        <a href="{% url 'chat_room' room.id %}">
+            채팅방 입장
+        </a>
+
+    </div>
+
+    <hr>
+
+{% empty %}
+
+    <p>
+        아직 채팅방이 없습니다.
+    </p>
+
+{% endfor %}
+
+</body>
+
+</html>
